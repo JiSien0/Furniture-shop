@@ -1,0 +1,263 @@
+<Window x:Class="FurnitureShop.AdminWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:FurnitureShop"
+        mc:Ignorable="d"
+        Title="Адмін-панель - Управління товарами" Height="650" Width="1000"
+        WindowStartupLocation="CenterScreen"
+        Background="#F5F5F5"
+        Icon="bench.ico">
+
+    <Grid Margin="20">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="20"/>
+            <ColumnDefinition Width="1*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Список товарів -->
+        <Border Grid.Column="0"
+                Background="White"
+                CornerRadius="8"
+                Padding="15">
+            <Border.Effect>
+                <DropShadowEffect Color="#CCCCCC" Opacity="0.3" BlurRadius="10" ShadowDepth="2"/>
+            </Border.Effect>
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Row="0"
+                           Text="Список товарів"
+                           FontSize="20"
+                           FontWeight="Bold"
+                           Foreground="#2196F3"
+                           Margin="0,0,0,15"/>
+
+                <DataGrid Grid.Row="1"
+                          ItemsSource="{Binding FurnitureList}"
+                          SelectedItem="{Binding SelectedFurniture}"
+                          AutoGenerateColumns="False"
+                          CanUserAddRows="False"
+                          SelectionMode="Single"
+                          IsReadOnly="True"
+                          GridLinesVisibility="Horizontal"
+                          HeadersVisibility="Column"
+                          RowHeight="40">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="50"/>
+                        <DataGridTextColumn Header="Назва" Binding="{Binding Name}" Width="*"/>
+                        <DataGridTextColumn Header="Серійний №" Binding="{Binding SerialNumber}" Width="120"/>
+                        <DataGridTextColumn Header="Категорія" Binding="{Binding Category.Name}" Width="110"/>
+                        <DataGridTextColumn Header="Ціна (₴)" Binding="{Binding Price, StringFormat='{}{0:N2}'}" Width="100"/>
+                        <DataGridTextColumn Header="Ряд" Binding="{Binding StorageRow}" Width="60"/>
+                        <DataGridTextColumn Header="Полиця" Binding="{Binding StorageShelf}" Width="70"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Grid>
+        </Border>
+
+        <!-- Форма редагування -->
+        <Border Grid.Column="2"
+                Background="White"
+                CornerRadius="8"
+                Padding="15">
+            <Border.Effect>
+                <DropShadowEffect Color="#CCCCCC" Opacity="0.3" BlurRadius="10" ShadowDepth="2"/>
+            </Border.Effect>
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Row="0"
+                           Text="Редагування товару"
+                           FontSize="18"
+                           FontWeight="SemiBold"
+                           Foreground="#2196F3"
+                           Margin="0,0,0,20"/>
+
+                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                    <StackPanel>
+                        <!-- Назва -->
+                        <TextBlock Text="Назва *" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                        <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
+                                 Padding="8"
+                                 FontSize="13"
+                                 Margin="0,0,0,15"/>
+
+                        <!-- Опис -->
+                        <TextBlock Text="Опис" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                        <TextBox Text="{Binding Description, UpdateSourceTrigger=PropertyChanged}"
+                                 Padding="8"
+                                 FontSize="13"
+                                 Height="80"
+                                 TextWrapping="Wrap"
+                                 AcceptsReturn="True"
+                                 VerticalScrollBarVisibility="Auto"
+                                 Margin="0,0,0,15"/>
+
+                        <!-- Ціна -->
+                        <TextBlock Text="Ціна (₴) *" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                        <TextBox Text="{Binding Price, UpdateSourceTrigger=PropertyChanged}"
+                                 Padding="8"
+                                 FontSize="13"
+                                 Margin="0,0,0,15"/>
+
+                        <!-- Серійний номер -->
+                        <TextBlock Text="Серійний номер" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                        <TextBox Text="{Binding SerialNumber, UpdateSourceTrigger=PropertyChanged}"
+                                 Padding="8"
+                                 FontSize="13"
+                                 Margin="0,0,0,15"/>
+
+                        <!-- Категорія -->
+                        <TextBlock Text="Категорія" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                        <ComboBox ItemsSource="{Binding Categories}"
+                                  SelectedItem="{Binding SelectedCategory}"
+                                  DisplayMemberPath="Name"
+                                  Padding="8"
+                                  FontSize="13"
+                                  Margin="0,0,0,15"/>
+
+                        <!-- Ряд -->
+                        <TextBlock Text="Ряд на складі" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                        <TextBox Text="{Binding StorageRow, UpdateSourceTrigger=PropertyChanged}"
+                                 Padding="8"
+                                 FontSize="13"
+                                 Margin="0,0,0,15"/>
+
+                        <!-- Полиця -->
+                        <TextBlock Text="Полиця на складі" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                        <TextBox Text="{Binding StorageShelf, UpdateSourceTrigger=PropertyChanged}"
+                                 Padding="8"
+                                 FontSize="13"
+                                 Margin="0,0,0,15"/>
+
+                        <!-- Зображення 1 -->
+                        <TextBlock Text="Зображення 1" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                        <Grid Margin="0,0,0,10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="10"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBox Grid.Column="0"
+                                     Text="{Binding ImagePath, UpdateSourceTrigger=PropertyChanged}"
+                                     Padding="8"
+                                     FontSize="13"
+                                     IsReadOnly="True"/>
+                            <Button Grid.Column="2"
+                                    Content="Вибрати..."
+                                    Command="{Binding SelectImageCommand}"
+                                    Padding="15,8"/>
+                        </Grid>
+
+                        <!-- Попередній перегляд 1 -->
+                        <Border BorderBrush="#E0E0E0"
+                                BorderThickness="1"
+                                CornerRadius="4"
+                                Height="100"
+                                Margin="0,0,0,15">
+                            <Image Source="{Binding ImagePath}"
+                                   Stretch="Uniform"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"/>
+                        </Border>
+
+                        <!-- Зображення 2 -->
+                        <TextBlock Text="Зображення 2 (опціонально)" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                        <Grid Margin="0,0,0,10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="10"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBox Grid.Column="0"
+                                     Text="{Binding ImagePath2, UpdateSourceTrigger=PropertyChanged}"
+                                     Padding="8"
+                                     FontSize="13"
+                                     IsReadOnly="True"/>
+                            <Button Grid.Column="2"
+                                    Content="Вибрати..."
+                                    Command="{Binding SelectImage2Command}"
+                                    Padding="15,8"/>
+                        </Grid>
+
+                        <!-- Попередній перегляд 2 -->
+                        <Border BorderBrush="#E0E0E0"
+                                BorderThickness="1"
+                                CornerRadius="4"
+                                Height="100"
+                                Margin="0,0,0,15">
+                            <Image Source="{Binding ImagePath2}"
+                                   Stretch="Uniform"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"/>
+                        </Border>
+
+                        <!-- Зображення 3 -->
+                        <TextBlock Text="Зображення 3 (опціонально)" FontWeight="SemiBold" Margin="0,0,0,5"/>
+                        <Grid Margin="0,0,0,10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="10"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBox Grid.Column="0"
+                                     Text="{Binding ImagePath3, UpdateSourceTrigger=PropertyChanged}"
+                                     Padding="8"
+                                     FontSize="13"
+                                     IsReadOnly="True"/>
+                            <Button Grid.Column="2"
+                                    Content="Вибрати..."
+                                    Command="{Binding SelectImage3Command}"
+                                    Padding="15,8"/>
+                        </Grid>
+
+                        <!-- Попередній перегляд 3 -->
+                        <Border BorderBrush="#E0E0E0"
+                                BorderThickness="1"
+                                CornerRadius="4"
+                                Height="100"
+                                Margin="0,0,0,15">
+                            <Image Source="{Binding ImagePath3}"
+                                   Stretch="Uniform"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"/>
+                        </Border>
+                    </StackPanel>
+                </ScrollViewer>
+
+                <StackPanel Grid.Row="2" Margin="0,15,0,0">
+                    <Button Content="Додати новий товар"
+                            Style="{StaticResource SuccessButton}"
+                            Command="{Binding AddCommand}"
+                            Padding="0,10"
+                            Margin="0,0,0,8"/>
+                    <Button Content="Оновити вибраний"
+                            Command="{Binding UpdateCommand}"
+                            Padding="0,10"
+                            Margin="0,0,0,8"/>
+                    <Button Content="Видалити вибраний"
+                            Style="{StaticResource DangerButton}"
+                            Command="{Binding DeleteCommand}"
+                            Padding="0,10"
+                            Margin="0,0,0,8"/>
+                    <Button Content="Очистити форму"
+                            Command="{Binding ClearCommand}"
+                            Padding="0,10"
+                            Background="#9E9E9E"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>
